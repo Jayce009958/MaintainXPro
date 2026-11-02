@@ -10,6 +10,8 @@ import rateLimit from "express-rate-limit";
 const app = express();
 const port = process.env.PORT || 3000;
 
+app.set("trust proxy", 1); // Trust first proxy for secure cookies
+
 const loginLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   limit: 5, // Allo 5 login attemps

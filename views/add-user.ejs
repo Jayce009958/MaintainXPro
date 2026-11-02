@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Add User | MaintainXPro</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+    <%- include("partials/navbar") %>
+
+    <main class="container py-5 equipment-form-page">
+
+        <!-- PAGE HEADER -->
+        <section class="equipment-form-hero">
+
+            <a href="/users" class="equipment-back-link">
+                &larr; Back to Users
+            </a>
+
+            <div class="mt-4">
+
+                <span class="equipment-eyebrow">
+                    USER MANAGEMENT
+                </span>
+
+                <h1 class="equipment-heading">
+                    Add New User.
+                </h1>
+
+                <p class="equipment-subtitle">
+                    Create a new user account and assign the appropriate
+                    access role within MaintainXPro.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- MAIN CONTENT -->
+        <div class="row g-4">
+
+            <!-- USER FORM -->
+            <div class="col-lg-8">
+
+                <section class="equipment-form-panel">
+
+                    <!-- FORM HEADER -->
+                    <div class="equipment-form-panel-header">
+
+                        <div class="equipment-form-icon">
+                            01
+                        </div>
+
+                        <div>
+                            <h5>User Information</h5>
+
+                            <p>
+                                Enter the account details of the new user.
+                            </p>
+                        </div>
+
+                    </div>
+
+
+                    <!-- FORM BODY -->
+                    <div class="p-4">
+
+                        <% if (error) { %>
+
+                            <div class="alert alert-danger equipment-form-alert">
+                                <%= error %>
+                            </div>
+
+                        <% } %>
+
+                        <form action="/users/new" method="POST">
+
+                            <!-- FULL NAME -->
+                            <div class="mb-4">
+
+                                <label for="full_name" class="form-label">
+                                    Full Name
+                                    <span class="text-danger">*</span>
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="full_name"
+                                    name="full_name"
+                                    class="form-control equipment-form-input"
+                                    maxlength="150"
+                                    value="<%= formData.full_name || '' %>"
+                                    placeholder="Enter full name"
+                                    required
+                                >
+
+                                <div class="equipment-field-help">
+                                    Enter the user's complete name.
+                                </div>
+
+                            </div>
+
+
+                            <!-- EMAIL -->
+                            <div class="mb-4">
+
+                                <label for="email" class="form-label">
+                                    Email Address
+                                    <span class="text-danger">*</span>
+                                </label>
+
+                                <input
+                                    type="email"
+                                    id="email"
+                                    name="email"
+                                    class="form-control equipment-form-input"
+                                    maxlength="255"
+                                    value="<%= formData.email || '' %>"
+                                    placeholder="Enter email address"
+                                    required
+                                >
+
+                                <div class="equipment-field-help">
+                                    Use a valid email address for the user account.
+                                </div>
+
+                            </div>
+
+
+                            <!-- PASSWORD -->
+                            <div class="mb-4">
+
+                                <label for="password" class="form-label">
+                                    Password
+                                    <span class="text-danger">*</span>
+                                </label>
+
+                                <input
+                                    type="password"
+                                    id="password"
+                                    name="password"
+                                    class="form-control equipment-form-input"
+                                    minlength="8"
+                                    autocomplete="new-password"
+                                    placeholder="Enter password"
+                                    required
+                                >
+
+                                <div class="equipment-field-help">
+                                    Password must contain at least 8 characters.
+                                </div>
+
+                            </div>
+
+
+                            <!-- ROLE -->
+                            <div class="mb-4">
+
+                                <label for="role" class="form-label">
+                                    User Role
+                                    <span class="text-danger">*</span>
+                                </label>
+
+                                <select
+                                    id="role"
+                                    name="role"
+                                    class="form-select equipment-form-input"
+                                    required
+                                >
+
+                                    <option
+                                        value="Technician"
+                                        <%= (formData.role || "Technician") === "Technician" ? "selected" : "" %>
+                                    >
+                                        Technician
+                                    </option>
+
+                                    <option
+                                        value="Maintenance Manager"
+                                        <%= formData.role === "Maintenance Manager" ? "selected" : "" %>
+                                    >
+                                        Maintenance Manager
+                                    </option>
+
+                                    <option
+                                        value="Admin"
+                                        <%= formData.role === "Admin" ? "selected" : "" %>
+                                    >
+                                        Admin
+                                    </option>
+
+                                </select>
+
+                                <div class="equipment-field-help">
+                                    Select the appropriate access level for this user.
+                                </div>
+
+                            </div>
+
+
+                            <!-- FORM ACTIONS -->
+                            <div class="equipment-form-actions">
+
+                                <a href="/users" class="equipment-clear-btn">
+                                    Cancel
+                                </a>
+
+                                <button
+                                    type="submit"
+                                    class="equipment-primary-btn"
+                                >
+                                    Create User
+                                </button>
+
+                            </div>
+
+                        </form>
+
+                    </div>
+
+                </section>
+
+            </div>
+
+
+            <!-- GUIDANCE SIDEBAR -->
+            <div class="col-lg-4">
+
+                <aside class="equipment-guidance-panel">
+
+                    <span class="equipment-panel-eyebrow">QUICK GUIDE</span>
+
+                    <h2>Before You Save</h2>
+
+                    <p class="equipment-guidance-intro">
+                        Follow these guidelines when creating a new
+                        MaintainXPro user account.
+                    </p>
+
+
+                    <!-- GUIDANCE 1 -->
+                    <div class="equipment-guidance-item">
+
+                        <span class="equipment-guidance-number">01</span>
+
+                        <div>
+                            <strong>Account Information</strong>
+
+                            <p>
+                                Provide the user's correct full name
+                                and email address.
+                            </p>
+                        </div>
+
+                    </div>
+
+
+                    <!-- GUIDANCE 2 -->
+                    <div class="equipment-guidance-item">
+
+                        <span class="equipment-guidance-number">02</span>
+
+                        <div>
+                            <strong>Password Security</strong>
+
+                            <p>
+                                Create a secure password containing
+                                at least eight characters.
+                            </p>
+                        </div>
+
+                    </div>
+
+
+                    <!-- GUIDANCE 3 -->
+                    <div class="equipment-guidance-item">
+
+                        <span class="equipment-guidance-number">03</span>
+
+                        <div>
+                            <strong>Assign User Role</strong>
+
+                            <p>
+                                Choose a role that matches the user's
+                                responsibilities.
+                            </p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="equipment-guidance-note">
+
+                        <strong>Important Reminder</strong>
+
+                        <p>
+                            Make sure the account information and
+                            assigned role are correct before creating
+                            the user.
+                        </p>
+
+                    </div>
+
+                </aside>
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <%- include("partials/footer") %>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Equipment Details | MaintainXPro</title>
+
+  <!-- Bootstrap 5 -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  >
+
+  <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+  <!-- Navigation Bar -->
+  <%- include("partials/navbar") %>
+
+  <main class="container py-5 equipment-details-page">
+
+    <!-- Page Header -->
+    <div class="equipment-details-header mb-4">
+
+      <a href="/equipment" class="equipment-details-back">
+        &larr; Back to Inventory
+      </a>
+
+      <div class="d-flex flex-column flex-md-row
+                  justify-content-between align-items-md-end gap-3 mt-3">
+
+        <div>
+          <span class="equipment-details-eyebrow">
+            EQUIPMENT MANAGEMENT
+          </span>
+
+          <h1 class="equipment-details-title">
+            Equipment Details
+          </h1>
+
+          <p class="equipment-details-description">
+            View the information and current operating condition of this equipment.
+          </p>
+        </div>
+
+        <a
+          href="/equipment/<%= equipment.id %>/edit"
+          class="btn equipment-details-edit-btn"
+        >
+          &#9998; Edit Equipment
+        </a>
+
+      </div>
+    </div>
+
+    <!-- Equipment Overview -->
+    <div class="equipment-details-overview mb-4">
+
+      <div class="equipment-details-overview-icon">
+        &#9881;
+      </div>
+
+      <div class="equipment-details-overview-content">
+
+        <span>EQUIPMENT CODE</span>
+
+        <h2>
+          <%= equipment.equipment_code %>
+        </h2>
+
+        <p>
+          <%= equipment.name %>
+        </p>
+
+      </div>
+
+      <div class="equipment-details-status">
+
+        <span>Current Status</span>
+
+        <% if (equipment.status === "Operational") { %>
+
+          <span class="equipment-status-badge status-operational">
+            <span></span>
+            <%= equipment.status %>
+          </span>
+
+        <% } else if (equipment.status === "Under Maintenance") { %>
+
+          <span class="equipment-status-badge status-maintenance">
+            <span></span>
+            <%= equipment.status %>
+          </span>
+
+        <% } else { %>
+
+          <span class="equipment-status-badge status-out-of-service">
+            <span></span>
+            <%= equipment.status %>
+          </span>
+
+        <% } %>
+
+      </div>
+
+    </div>
+
+    <!-- Equipment Information -->
+    <div class="row g-4">
+
+      <div class="col-lg-8">
+
+        <div class="equipment-details-card">
+
+          <div class="equipment-details-card-header">
+            <div>
+              <h5>Equipment Information</h5>
+              <p>General information about this equipment record.</p>
+            </div>
+          </div>
+
+          <div class="equipment-details-grid">
+
+            <!-- Equipment Name -->
+            <div class="equipment-detail-item">
+              <span class="equipment-detail-label">
+                Equipment Name
+              </span>
+
+              <h6>
+                <%= equipment.name %>
+              </h6>
+            </div>
+
+            <!-- Category -->
+            <div class="equipment-detail-item">
+              <span class="equipment-detail-label">
+                Category
+              </span>
+
+              <h6>
+                <%= equipment.category || "Not specified" %>
+              </h6>
+            </div>
+
+            <!-- Location -->
+            <div class="equipment-detail-item">
+              <span class="equipment-detail-label">
+                Location
+              </span>
+
+              <h6>
+                <%= equipment.location || "Not specified" %>
+              </h6>
+            </div>
+
+            <!-- Equipment Code -->
+            <div class="equipment-detail-item">
+              <span class="equipment-detail-label">
+                Equipment Code
+              </span>
+
+              <h6>
+                <%= equipment.equipment_code %>
+              </h6>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Record Information -->
+      <div class="col-lg-4">
+
+        <div class="equipment-details-card equipment-record-card">
+
+          <div class="equipment-details-card-header">
+            <div>
+              <h5>Record Information</h5>
+              <p>Equipment registration details.</p>
+            </div>
+          </div>
+
+          <div class="equipment-record-item">
+
+            <span class="equipment-detail-label">
+              Equipment ID
+            </span>
+
+            <h6>
+              #<%= equipment.id %>
+            </h6>
+
+          </div>
+
+          <div class="equipment-record-item">
+
+            <span class="equipment-detail-label">
+              Registration Date
+            </span>
+
+            <h6>
+              <%= equipment.created_at
+                ? new Date(equipment.created_at).toLocaleString("en-PH", {
+                    dateStyle: "medium",
+                    timeStyle: "short",
+                    timeZone: "Asia/Manila"
+                  })
+                : "Not available" %>
+            </h6>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Bottom Action -->
+    <div class="equipment-details-bottom mt-4">
+
+      <p>
+        Need to make changes to this equipment record?
+      </p>
+
+      <a
+        href="/equipment/<%= equipment.id %>/edit"
+        class="equipment-details-bottom-link"
+      >
+        Edit Equipment &rarr;
+      </a>
+
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <%- include("partials/footer") %>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,157 @@
+<nav class="navbar navbar-expand-lg navbar-dark app-navbar">
+  <div class="container">
+
+    <!-- Brand -->
+    <a class="navbar-brand" href="/">
+      <span class="brand-icon">
+        <i class="bi bi-gear-wide-connected"></i>
+      </span>
+
+      <span class="brand-name">
+        MaintainX<span class="brand-accent">Pro</span>
+      </span>
+    </a>
+
+    <!-- Mobile Menu Button -->
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#mainNavbar"
+      aria-controls="mainNavbar"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Navigation -->
+    <div class="collapse navbar-collapse" id="mainNavbar">
+
+      <ul class="navbar-nav ms-auto">
+
+        <!-- Home -->
+        <li class="nav-item">
+          <a
+            class="nav-link <%= currentPath === '/' ? 'active' : '' %>"
+            href="/"
+            <%= currentPath === '/' ? 'aria-current="page"' : '' %>
+          >
+            <i class="bi bi-house-door me-1"></i>
+            Home
+          </a>
+        </li>
+
+        <% if (currentUser) { %>
+
+          <!-- Dashboard -->
+          <li class="nav-item">
+            <a
+              class="nav-link <%= currentPath === '/dashboard' ? 'active' : '' %>"
+              href="/dashboard"
+              <%= currentPath === '/dashboard' ? 'aria-current="page"' : '' %>
+            >
+              <i class="bi bi-grid me-1"></i>
+              Dashboard
+            </a>
+          </li>
+
+          <!-- Equipment -->
+          <li class="nav-item">
+            <a
+              class="nav-link <%= currentPath.startsWith('/equipment') ? 'active' : '' %>"
+              href="/equipment"
+              <%= currentPath.startsWith('/equipment') ? 'aria-current="page"' : '' %>
+            >
+              <i class="bi bi-cpu me-1"></i>
+              Equipment
+            </a>
+          </li>
+
+          <!-- Maintenance Schedules -->
+          <li class="nav-item">
+            <a
+              class="nav-link <%= currentPath.startsWith('/maintenance-schedules') ? 'active' : '' %>"
+              href="/maintenance-schedules"
+              <%= currentPath.startsWith('/maintenance-schedules') ? 'aria-current="page"' : '' %>
+            >
+              <i class="bi bi-calendar-check me-1"></i>
+              Maintenance
+            </a>
+          </li>
+
+          <!-- Work Orders -->
+          <li class="nav-item">
+            <a
+              class="nav-link <%= currentPath.startsWith('/work-orders') ? 'active' : '' %>"
+              href="/work-orders"
+              <%= currentPath.startsWith('/work-orders') ? 'aria-current="page"' : '' %>
+            >
+              <i class="bi bi-clipboard-check me-1"></i>
+              Work Orders
+            </a>
+          </li>
+
+          <!-- Users -->
+          <li class="nav-item">
+            <a
+              class="nav-link <%= currentPath.startsWith('/users') ? 'active' : '' %>"
+              href="/users"
+              <%= currentPath.startsWith('/users') ? 'aria-current="page"' : '' %>
+            >
+              <i class="bi bi-people me-1"></i>
+              Users
+            </a>
+          </li>
+
+        <% } else { %>
+
+          <!-- Login -->
+          <li class="nav-item">
+            <a
+              class="nav-link <%= currentPath === '/login' ? 'active' : '' %>"
+              href="/login"
+              <%= currentPath === '/login' ? 'aria-current="page"' : '' %>
+            >
+              <i class="bi bi-box-arrow-in-right me-1"></i>
+              Login
+            </a>
+          </li>
+
+        <% } %>
+
+      </ul>
+
+      <% if (currentUser) { %>
+
+        <!-- User Section -->
+        <div class="navbar-user-section">
+
+          <div class="navbar-user-info">
+            <div class="navbar-user-avatar">
+              <i class="bi bi-person"></i>
+            </div>
+
+            <div class="navbar-user-details">
+              <span class="navbar-user-label">SIGNED IN AS</span>
+              <span class="navbar-user-name">
+                <%= currentUser.full_name %>
+              </span>
+            </div>
+          </div>
+
+          <!-- Logout -->
+          <form action="/logout" method="POST">
+            <button type="submit" class="navbar-logout-btn">
+              <i class="bi bi-box-arrow-right"></i>
+              <span>Logout</span>
+            </button>
+          </form>
+
+        </div>
+
+      <% } %>
+
+    </div>
+  </div>
+</nav>

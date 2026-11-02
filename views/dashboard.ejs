@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Dashboard | MaintainXPro</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Bootstrap Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+
+  <body>
+    <%- include("partials/navbar") %>
+
+    <main class="main-content container py-5 dashboard-page">
+
+      <!-- Dashboard Header -->
+      <section class="dashboard-hero mb-5">
+        <div class="dashboard-hero-content">
+
+          <div class="dashboard-eyebrow">
+            <span class="dashboard-eyebrow-dot"></span>
+            MAINTENANCE OPERATIONS
+          </div>
+
+          <h1 class="dashboard-heading">
+            Dashboard<span>.</span>
+          </h1>
+
+          <p class="dashboard-subtitle">
+            Monitor your maintenance operations, manage equipment,
+            and keep track of ongoing activities from one place.
+          </p>
+
+        </div>
+
+        <a href="/work-orders/new" class="dashboard-create-btn">
+          <i class="bi bi-plus-lg"></i>
+          Create Work Order
+        </a>
+      </section>
+
+
+      <!-- System Statistics -->
+      <section class="dashboard-stats-section mb-5">
+
+        <div class="dashboard-section-heading">
+          <div>
+            <div class="dashboard-section-eyebrow">AT A GLANCE</div>
+            <h2>System Overview</h2>
+          </div>
+
+          <span class="dashboard-section-tag">
+            <i class="bi bi-bar-chart-line"></i>
+            KEY METRICS
+          </span>
+        </div>
+
+        <div class="row g-4">
+
+          <!-- Total Equipment -->
+          <div class="col-12 col-sm-6 col-xl-3">
+            <article class="dashboard-stat-card stat-equipment h-100">
+
+              <div class="stat-card-top">
+                <span class="stat-icon">
+                  <i class="bi bi-cpu"></i>
+                </span>
+                <span class="stat-index">01</span>
+              </div>
+
+              <p class="stat-label">Total Equipment</p>
+
+              <h3 class="stat-value">
+                <%= totalEquipment %>
+              </h3>
+
+              <p class="stat-description">
+                Equipment registered in the system
+              </p>
+
+              <a href="/equipment" class="stat-card-link">
+                View Equipment
+                <i class="bi bi-arrow-right"></i>
+              </a>
+
+            </article>
+          </div>
+
+
+          <!-- Open Work Orders -->
+          <div class="col-12 col-sm-6 col-xl-3">
+            <article class="dashboard-stat-card stat-open h-100">
+
+              <div class="stat-card-top">
+                <span class="stat-icon">
+                  <i class="bi bi-exclamation-triangle"></i>
+                </span>
+                <span class="stat-index">02</span>
+              </div>
+
+              <p class="stat-label">Open Work Orders</p>
+
+              <h3 class="stat-value">
+                <%= openWorkOrders %>
+              </h3>
+
+              <p class="stat-description">
+                Work orders requiring attention
+              </p>
+
+              <a href="/work-orders" class="stat-card-link">
+                View Work Orders
+                <i class="bi bi-arrow-right"></i>
+              </a>
+
+            </article>
+          </div>
+
+
+          <!-- Completed Work Orders -->
+          <div class="col-12 col-sm-6 col-xl-3">
+            <article class="dashboard-stat-card stat-completed h-100">
+
+              <div class="stat-card-top">
+                <span class="stat-icon">
+                  <i class="bi bi-check-circle"></i>
+                </span>
+                <span class="stat-index">03</span>
+              </div>
+
+              <p class="stat-label">Completed Work Orders</p>
+
+              <h3 class="stat-value">
+                <%= completedWorkOrders %>
+              </h3>
+
+              <p class="stat-description">
+                Successfully completed maintenance tasks
+              </p>
+
+              <a href="/work-orders" class="stat-card-link">
+                View Completed Tasks
+                <i class="bi bi-arrow-right"></i>
+              </a>
+
+            </article>
+          </div>
+
+
+          <!-- Maintenance Schedules -->
+          <div class="col-12 col-sm-6 col-xl-3">
+            <article class="dashboard-stat-card stat-schedules h-100">
+
+              <div class="stat-card-top">
+                <span class="stat-icon">
+                  <i class="bi bi-calendar-check"></i>
+                </span>
+                <span class="stat-index">04</span>
+              </div>
+
+              <p class="stat-label">Maintenance Schedules</p>
+
+              <h3 class="stat-value">
+                <%= totalMaintenanceSchedules %>
+              </h3>
+
+              <p class="stat-description">
+                Preventive maintenance schedules recorded
+              </p>
+
+              <a href="/maintenance-schedules" class="stat-card-link">
+                View Schedules
+                <i class="bi bi-arrow-right"></i>
+              </a>
+
+            </article>
+          </div>
+
+        </div>
+      </section>
+
+
+      <!-- Maintenance Workspace -->
+      <section class="dashboard-workspace mb-5">
+
+        <div class="dashboard-section-heading">
+          <div>
+            <div class="dashboard-section-eyebrow">ACTIVITY CENTER</div>
+            <h2>Maintenance Workspace</h2>
+          </div>
+
+          <span class="dashboard-section-tag">
+            <span class="dashboard-live-dot"></span>
+            SYSTEM RECORDS
+          </span>
+        </div>
+
+
+        <div class="row g-4">
+
+          <!-- Recent Work Orders -->
+          <div class="col-12 col-xl-7">
+
+            <section class="dashboard-panel h-100">
+
+              <div class="dashboard-panel-header">
+
+                <div class="dashboard-panel-heading">
+                  <span class="dashboard-panel-icon">
+                    <i class="bi bi-clipboard-check"></i>
+                  </span>
+
+                  <div>
+                    <div class="panel-eyebrow">WORK MANAGEMENT</div>
+                    <h2>Recent Work Orders</h2>
+                    <p>Review your latest maintenance activities.</p>
+                  </div>
+                </div>
+
+                <a href="/work-orders" class="panel-action">
+                  View All
+                  <i class="bi bi-arrow-up-right"></i>
+                </a>
+
+              </div>
+
+
+              <div class="dashboard-table-wrap">
+
+                <% if (recentWorkOrders.length > 0) { %>
+
+                  <table class="table dashboard-table align-middle mb-0">
+
+                    <thead>
+                      <tr>
+                        <th>ID</th>
+                        <th>Work Order</th>
+                        <th>Priority</th>
+                        <th>Status</th>
+                      </tr>
+                    </thead>
+
+                    <tbody>
+
+                      <% recentWorkOrders.forEach((order) => { %>
+
+                        <tr>
+
+                          <td class="dashboard-id">
+                            #<%= order.id %>
+                          </td>
+
+                          <td class="dashboard-record-title">
+                            <%= order.title %>
+                          </td>
+
+                          <td>
+
+                            <% if (
+                              order.priority === "High" ||
+                              order.priority === "Urgent"
+                            ) { %>
+
+                              <span class="dashboard-badge badge-priority-high">
+                                <%= order.priority %>
+                              </span>
+
+                            <% } else if (order.priority === "Medium") { %>
+
+                              <span class="dashboard-badge badge-priority-medium">
+                                <%= order.priority %>
+                              </span>
+
+                            <% } else { %>
+
+                              <span class="dashboard-badge badge-priority-low">
+                                <%= order.priority %>
+                              </span>
+
+                            <% } %>
+
+                          </td>
+
+                          <td>
+
+                            <% if (order.status === "Completed") { %>
+
+                              <span class="dashboard-badge badge-status-completed">
+                                <%= order.status %>
+                              </span>
+
+                            <% } else if (order.status === "In Progress") { %>
+
+                              <span class="dashboard-badge badge-status-progress">
+                                <%= order.status %>
+                              </span>
+
+                            <% } else if (order.status === "Open") { %>
+
+                              <span class="dashboard-badge badge-status-open">
+                                <%= order.status %>
+                              </span>
+
+                            <% } else { %>
+
+                              <span class="dashboard-badge badge-status-other">
+                                <%= order.status %>
+                              </span>
+
+                            <% } %>
+
+                          </td>
+
+                        </tr>
+
+                      <% }); %>
+
+                    </tbody>
+
+                  </table>
+
+                <% } else { %>
+
+                  <div class="dashboard-empty-state">
+
+                    <span class="empty-state-icon">
+                      <i class="bi bi-clipboard-x"></i>
+                    </span>
+
+                    <h3>No Work Orders Yet</h3>
+
+                    <p>
+                      Create a work order to start tracking
+                      your maintenance activities.
+                    </p>
+
+                    <a href="/work-orders/new" class="dashboard-empty-btn">
+                      <i class="bi bi-plus-lg"></i>
+                      Create Work Order
+                    </a>
+
+                  </div>
+
+                <% } %>
+
+              </div>
+
+            </section>
+
+          </div>
+
+
+          <!-- Maintenance Overview -->
+          <div class="col-12 col-xl-5">
+
+            <section class="dashboard-panel h-100">
+
+              <div class="dashboard-panel-header">
+
+                <div class="dashboard-panel-heading">
+                  <span class="dashboard-panel-icon schedule-panel-icon">
+                    <i class="bi bi-calendar2-check"></i>
+                  </span>
+
+                  <div>
+                    <div class="panel-eyebrow">PREVENTIVE MAINTENANCE</div>
+                    <h2>Maintenance Overview</h2>
+                    <p>Review your scheduled maintenance activities.</p>
+                  </div>
+                </div>
+
+                <a href="/maintenance-schedules" class="panel-action">
+                  View All
+                  <i class="bi bi-arrow-up-right"></i>
+                </a>
+
+              </div>
+
+
+              <div class="dashboard-table-wrap">
+
+                <% if (maintenanceOverview.length > 0) { %>
+
+                  <table class="table dashboard-table align-middle mb-0">
+
+                    <thead>
+                      <tr>
+                        <th>Maintenance</th>
+                        <th>Equipment</th>
+                        <th>Next Date</th>
+                      </tr>
+                    </thead>
+
+                    <tbody>
+
+                      <% maintenanceOverview.forEach((schedule) => { %>
+
+                        <tr>
+
+                          <td class="dashboard-record-title">
+                            <%= schedule.title %>
+                          </td>
+
+                          <td>
+
+                            <span class="equipment-code">
+                              <%= schedule.equipment_code %>
+                            </span>
+
+                            <small class="dashboard-muted">
+                              <%= schedule.equipment_name %>
+                            </small>
+
+                          </td>
+
+                          <td class="dashboard-date">
+                            <%= schedule.next_maintenance_date %>
+                          </td>
+
+                        </tr>
+
+                      <% }); %>
+
+                    </tbody>
+
+                  </table>
+
+                <% } else { %>
+
+                  <div class="dashboard-empty-state">
+
+                    <span class="empty-state-icon">
+                      <i class="bi bi-calendar-x"></i>
+                    </span>
+
+                    <h3>No Schedules Yet</h3>
+
+                    <p>
+                      Create a maintenance schedule to organize
+                      upcoming maintenance activities.
+                    </p>
+
+                    <a
+                      href="/maintenance-schedules/new"
+                      class="dashboard-empty-btn"
+                    >
+                      <i class="bi bi-plus-lg"></i>
+                      Create Schedule
+                    </a>
+
+                  </div>
+
+                <% } %>
+
+              </div>
+
+            </section>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- Quick Actions -->
+      <section class="dashboard-quick-actions">
+
+        <div class="quick-actions-heading">
+
+          <div class="dashboard-section-eyebrow">
+            WORKFLOW SHORTCUTS
+          </div>
+
+          <h2>Quick Actions</h2>
+
+          <p>
+            Access the tools you need to manage your maintenance operations.
+          </p>
+
+        </div>
+
+
+        <div class="quick-action-links">
+
+          <a href="/equipment/new" class="quick-action-link">
+            <span class="quick-action-icon">
+              <i class="bi bi-plus-lg"></i>
+            </span>
+
+            <span>
+              <strong>Add Equipment</strong>
+              <small>Register a new asset</small>
+            </span>
+
+            <i class="bi bi-arrow-right quick-action-arrow"></i>
+          </a>
+
+
+          <a href="/maintenance-schedules/new" class="quick-action-link">
+            <span class="quick-action-icon">
+              <i class="bi bi-calendar-plus"></i>
+            </span>
+
+            <span>
+              <strong>Create Schedule</strong>
+              <small>Plan preventive maintenance</small>
+            </span>
+
+            <i class="bi bi-arrow-right quick-action-arrow"></i>
+          </a>
+
+
+          <a href="/work-orders/new" class="quick-action-link">
+            <span class="quick-action-icon">
+              <i class="bi bi-clipboard-plus"></i>
+            </span>
+
+            <span>
+              <strong>Create Work Order</strong>
+              <small>Assign a maintenance task</small>
+            </span>
+
+            <i class="bi bi-arrow-right quick-action-arrow"></i>
+          </a>
+
+        </div>
+
+      </section>
+
+    </main>
+
+
+    <!-- Footer -->
+    <%- include("partials/footer") %>
+
+    <!-- Bootstrap JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  </body>
+</html>

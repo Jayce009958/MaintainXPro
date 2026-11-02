@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Work Order | MaintainXPro</title>
+
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  >
+
+  <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+<%- include("partials/navbar") %>
+
+  <main class="container py-5 equipment-form-page">
+
+
+<!-- PAGE HEADER -->
+<section class="equipment-form-hero">
+  <a href="/work-orders" class="equipment-back-link">
+    <i class="bi bi-arrow-left"></i>
+    Back to Work Orders
+  </a>
+
+  <div class="equipment-hero-content mt-3">
+    <span class="equipment-eyebrow">
+      MAINTENANCE OPERATIONS
+    </span>
+
+    <h1 class="equipment-heading">
+      Create Work Order
+    </h1>
+
+    <p class="equipment-subtitle">
+      Create and organize maintenance tasks by specifying the
+      required work, equipment, priority, and schedule.
+    </p>
+  </div>
+</section>
+
+<!-- MAIN CONTENT -->
+<div class="row g-4 mt-2">
+
+  <!-- WORK ORDER FORM -->
+  <div class="col-lg-8">
+
+    <section class="equipment-form-panel">
+
+      <div class="equipment-form-panel-header">
+        <div class="equipment-form-icon">
+          01
+        </div>
+
+        <div>
+          <h2>Work Order Information</h2>
+          <p>Enter the details of the maintenance task.</p>
+        </div>
+      </div>
+
+      <form action="/work-orders/new" method="POST">
+
+        <!-- WORK ORDER TITLE -->
+        <div class="mb-4">
+          <label for="title" class="form-label">
+            Work Order Title
+            <span class="text-danger">*</span>
+          </label>
+
+          <input
+            type="text"
+            class="form-control equipment-form-input"
+            id="title"
+            name="title"
+            maxlength="200"
+            placeholder="Enter work order title..."
+            required
+          >
+
+          <div class="equipment-field-help">
+            Provide a short and descriptive title for the maintenance task.
+          </div>
+        </div>
+
+        <!-- DESCRIPTION -->
+        <div class="mb-4">
+          <label for="description" class="form-label">
+            Description
+          </label>
+
+          <textarea
+            class="form-control equipment-form-input"
+            id="description"
+            name="description"
+            rows="4"
+            placeholder="Describe the maintenance work required..."
+          ></textarea>
+
+          <div class="equipment-field-help">
+            Include relevant details about the issue or required maintenance.
+          </div>
+        </div>
+
+        <!-- EQUIPMENT -->
+        <div class="mb-4">
+          <label for="equipment_id" class="form-label">
+            Equipment
+          </label>
+
+          <select
+            class="form-select equipment-form-input"
+            id="equipment_id"
+            name="equipment_id"
+          >
+            <option value="">No equipment selected</option>
+
+            <% equipment.forEach(item => { %>
+              <option value="<%= item.id %>">
+                <%= item.equipment_code %> - <%= item.name %>
+              </option>
+            <% }) %>
+          </select>
+
+          <div class="equipment-field-help">
+            Select the equipment associated with this maintenance task.
+          </div>
+        </div>
+
+        <!-- PRIORITY AND STATUS -->
+        <div class="row g-3 mb-4">
+
+          <div class="col-md-6">
+            <label for="priority" class="form-label">
+              Priority
+            </label>
+
+            <select
+              class="form-select equipment-form-input"
+              id="priority"
+              name="priority"
+              required
+            >
+              <option value="Low">Low</option>
+              <option value="Medium" selected>Medium</option>
+              <option value="High">High</option>
+            </select>
+
+            <div class="equipment-field-help">
+              Set the urgency level of the maintenance task.
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <label for="status" class="form-label">
+              Status
+            </label>
+
+            <select
+              class="form-select equipment-form-input"
+              id="status"
+              name="status"
+              required
+            >
+              <option value="Open" selected>Open</option>
+              <option value="In Progress">In Progress</option>
+              <option value="Completed">Completed</option>
+            </select>
+
+            <div class="equipment-field-help">
+              Choose the current progress of the work order.
+            </div>
+          </div>
+
+        </div>
+
+        <!-- DUE DATE -->
+        <div class="mb-4">
+          <label for="due_date" class="form-label">
+            Due Date
+          </label>
+
+          <input
+            type="date"
+            class="form-control equipment-form-input"
+            id="due_date"
+            name="due_date"
+          >
+
+          <div class="equipment-field-help">
+            Set the target completion date for this maintenance task.
+          </div>
+        </div>
+
+        <!-- FORM ACTIONS -->
+        <div class="equipment-form-actions">
+
+          <button
+            type="submit"
+            class="equipment-primary-btn"
+          >
+            <i class="bi bi-plus-circle me-1"></i>
+            Create Work Order
+          </button>
+
+          <a
+            href="/work-orders"
+            class="equipment-clear-btn"
+          >
+            Cancel
+          </a>
+
+        </div>
+
+      </form>
+
+    </section>
+
+  </div>
+
+  <!-- GUIDANCE SIDEBAR -->
+  <div class="col-lg-4">
+
+    <aside class="equipment-guidance-panel">
+
+      <span class="equipment-panel-eyebrow">
+        QUICK GUIDE
+      </span>
+
+      <h2>Before You Save</h2>
+
+      <p class="equipment-guidance-intro">
+        Keep maintenance activities organized by providing
+        accurate and complete work order information.
+      </p>
+
+      <!-- GUIDANCE ITEM 1 -->
+      <div class="equipment-guidance-item">
+        <div class="equipment-guidance-number">01</div>
+
+        <div>
+          <h3>Clear Work Description</h3>
+          <p>
+            Use a descriptive title and provide enough details
+            to help technicians understand the required work.
+          </p>
+        </div>
+      </div>
+
+      <!-- GUIDANCE ITEM 2 -->
+      <div class="equipment-guidance-item">
+        <div class="equipment-guidance-number">02</div>
+
+        <div>
+          <h3>Correct Equipment</h3>
+          <p>
+            Associate the work order with the correct equipment
+            whenever the maintenance task involves a specific asset.
+          </p>
+        </div>
+      </div>
+
+      <!-- GUIDANCE ITEM 3 -->
+      <div class="equipment-guidance-item">
+        <div class="equipment-guidance-number">03</div>
+
+        <div>
+          <h3>Set the Priority</h3>
+          <p>
+            Choose a priority level that reflects the urgency
+            and operational impact of the maintenance task.
+          </p>
+        </div>
+      </div>
+
+      <!-- GUIDANCE ITEM 4 -->
+      <div class="equipment-guidance-item">
+        <div class="equipment-guidance-number">04</div>
+
+        <div>
+          <h3>Monitor Progress</h3>
+          <p>
+            Keep the work order status updated as the
+            maintenance activity progresses.
+          </p>
+        </div>
+      </div>
+
+      <div class="equipment-guidance-note">
+        <strong>Maintenance Tip</strong>
+        <p class="mb-0">
+          Accurate work order information helps improve
+          maintenance planning, coordination, and tracking.
+        </p>
+      </div>
+
+    </aside>
+
+  </div>
+
+</div>
+
+
+  </main>
+
+<%- include("partials/footer") %>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

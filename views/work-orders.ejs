@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Work Orders | MaintainXPro</title>
+
+    <!-- Bootstrap 5 -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+
+    <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+    <!-- Navigation Bar -->
+    <%- include("partials/navbar") %>
+
+    <main class="container py-5 equipment-page">
+
+      <!-- PAGE HEADER -->
+      <section class="equipment-hero mb-4">
+
+        <div class="equipment-hero-content">
+          <span class="equipment-eyebrow">MAINTENANCE OPERATIONS</span>
+
+          <h1 class="equipment-heading">Work Orders</h1>
+
+          <p class="equipment-subtitle">
+            Monitor, assign, and manage equipment maintenance tasks.
+            Track priorities, technicians, and work order progress.
+          </p>
+        </div>
+
+        <% if (
+          currentUser.role === "Admin" ||
+          currentUser.role === "Maintenance Manager"
+        ) { %>
+
+          <a href="/work-orders/new" class="equipment-primary-btn">
+            + Create Work Order
+          </a>
+
+        <% } %>
+
+      </section>
+
+
+      
+      <!-- SUCCESS MESSAGE -->
+      <% if (["created", "updated", "deleted"].includes(success)) { %>
+        <div
+          class="alert alert-success equipment-alert mb-4"
+          role="alert"
+          style="position: relative; padding-right: 45px;"
+        >
+          <%= success === "created"
+            ? "Work order created successfully!"
+            : success === "updated"
+            ? "Work order updated successfully!"
+            : "Work order deleted successfully!" %>
+
+          <button
+            type="button"
+            data-bs-dismiss="alert"
+            aria-label="Close"
+            style="
+              position: absolute;
+              top: 5px;
+              right: 12px;
+              border: none;
+              background: transparent;
+              color: inherit;
+              font-size: 24px;
+              font-weight: bold;
+              cursor: pointer;
+              line-height: 1;
+            "
+          >
+            &times;
+          </button>
+        </div>
+      <% } %>
+
+
+      <!-- FILTER PANEL -->
+      <section class="equipment-panel mb-4">
+
+        <div class="equipment-panel-header">
+          <div>
+            <span class="equipment-panel-eyebrow">RECORD FILTERS</span>
+            <h2>Find Work Orders</h2>
+            <p>Search and filter your maintenance tasks.</p>
+          </div>
+        </div>
+
+
+        <form action="/work-orders" method="GET">
+
+          <div class="row g-3 align-items-end">
+
+            <!-- SEARCH -->
+            <div class="col-lg-5 col-md-12">
+
+              <label for="search" class="form-label">
+                Search Work Orders
+              </label>
+
+              <input
+                type="text"
+                class="form-control equipment-input"
+                id="search"
+                name="search"
+                placeholder="Enter work order title..."
+                value="<%= search || '' %>"
+              >
+
+            </div>
+
+
+            <!-- PRIORITY -->
+            <div class="col-lg-3 col-md-6">
+
+              <label for="priority" class="form-label">
+                Priority
+              </label>
+
+              <select
+                class="form-select equipment-input"
+                id="priority"
+                name="priority"
+              >
+
+                <option value="">All Priorities</option>
+
+                <option value="Low" <%= priority === "Low" ? "selected" : "" %>>
+                  Low
+                </option>
+
+                <option value="Medium" <%= priority === "Medium" ? "selected" : "" %>>
+                  Medium
+                </option>
+
+                <option value="High" <%= priority === "High" ? "selected" : "" %>>
+                  High
+                </option>
+
+              </select>
+
+            </div>
+
+
+            <!-- STATUS -->
+            <div class="col-lg-2 col-md-6">
+
+              <label for="status" class="form-label">
+                Status
+              </label>
+
+              <select
+                class="form-select equipment-input"
+                id="status"
+                name="status"
+              >
+
+                <option value="">All Statuses</option>
+
+                <option value="Open" <%= status === "Open" ? "selected" : "" %>>
+                  Open
+                </option>
+
+                <option value="In Progress" <%= status === "In Progress" ? "selected" : "" %>>
+                  In Progress
+                </option>
+
+                <option value="Completed" <%= status === "Completed" ? "selected" : "" %>>
+                  Completed
+                </option>
+
+              </select>
+
+            </div>
+
+
+            <!-- FILTER BUTTONS -->
+            <div class="col-lg-2 col-md-12">
+
+              <div class="d-flex gap-2 equipment-filter-actions">
+
+                <button
+                  type="submit"
+                  class="equipment-primary-btn equipment-search-btn"
+                >
+                  Filter
+                </button>
+
+                <a
+                  href="/work-orders"
+                  class="equipment-clear-btn"
+                >
+                  Clear
+                </a>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </form>
+
+      </section>
+
+
+      <!-- WORK ORDERS TABLE -->
+      <section class="equipment-panel">
+
+        <div class="equipment-panel-header inventory-header">
+
+          <div>
+            <span class="equipment-panel-eyebrow">WORK ORDER DATABASE</span>
+            <h2>Work Order Records</h2>
+            <p>View and manage your maintenance activities.</p>
+          </div>
+
+          <span class="equipment-record-count">
+            <%= workOrders.length %> Records
+          </span>
+
+        </div>
+
+
+        <div class="table-responsive equipment-table-wrap">
+
+          <table class="table table-hover align-middle mb-0 equipment-table">
+
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Work Order</th>
+                <th>Equipment</th>
+                <th>Assigned Technician</th>
+                <th>Priority</th>
+                <th>Status</th>
+                <th>Due Date</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+
+
+            <tbody>
+
+              <% if (workOrders.length > 0) { %>
+
+                <% workOrders.forEach(order => { %>
+
+                  <tr>
+
+                    <!-- ID -->
+                    <td>
+                      <span class="equipment-id">
+                        #<%= order.id %>
+                      </span>
+                    </td>
+
+
+                    <!-- WORK ORDER -->
+                    <td>
+                      <div class="equipment-name">
+                        <%= order.title %>
+                      </div>
+                    </td>
+
+
+                    <!-- EQUIPMENT -->
+                    <td>
+
+                      <% if (order.equipment_code) { %>
+
+                        <div class="equipment-code">
+                          <%= order.equipment_code %>
+                        </div>
+
+                        <div class="equipment-location">
+                          <%= order.equipment_name %>
+                        </div>
+
+                      <% } else { %>
+
+                        <span class="equipment-location">
+                          Not assigned
+                        </span>
+
+                      <% } %>
+
+                    </td>
+
+
+                    <!-- ASSIGNED TECHNICIAN -->
+                    <td>
+                      <span class="equipment-category">
+                        <%= order.assigned_technician || "Unassigned" %>
+                      </span>
+                    </td>
+
+
+                    <!-- PRIORITY -->
+                    <td>
+
+                      <% if (
+                        order.priority === "High" ||
+                        order.priority === "Urgent"
+                      ) { %>
+
+                        <span class="equipment-badge badge-offline">
+                          <span></span>
+                          <%= order.priority %>
+                        </span>
+
+                      <% } else if (order.priority === "Medium") { %>
+
+                        <span class="equipment-badge badge-maintenance">
+                          <span></span>
+                          <%= order.priority %>
+                        </span>
+
+                      <% } else { %>
+
+                        <span class="equipment-badge badge-operational">
+                          <span></span>
+                          <%= order.priority %>
+                        </span>
+
+                      <% } %>
+
+                    </td>
+
+
+                    <!-- STATUS -->
+                    <td>
+
+                      <% if (order.status === "Completed") { %>
+
+                        <span class="equipment-badge badge-operational">
+                          <span></span>
+                          <%= order.status %>
+                        </span>
+
+                      <% } else if (order.status === "In Progress") { %>
+
+                        <span class="equipment-badge badge-maintenance">
+                          <span></span>
+                          <%= order.status %>
+                        </span>
+
+                      <% } else if (order.status === "Open") { %>
+
+                        <span class="equipment-badge badge-offline">
+                          <span></span>
+                          <%= order.status %>
+                        </span>
+
+                      <% } else { %>
+
+                        <span class="equipment-badge badge-unknown">
+                          <span></span>
+                          <%= order.status %>
+                        </span>
+
+                      <% } %>
+
+                    </td>
+
+
+                    <!-- DUE DATE -->
+                    <td>
+
+                      <% if (order.due_date) { %>
+
+                        <span class="equipment-location">
+                          <%= new Date(order.due_date).toLocaleDateString("en-US", {
+                            year: "numeric",
+                            month: "short",
+                            day: "numeric",
+                            timeZone: "UTC"
+                          }) %>
+                        </span>
+
+                      <% } else { %>
+
+                        <span class="equipment-location">
+                          No due date
+                        </span>
+
+                      <% } %>
+
+                    </td>
+
+
+                    <!-- ACTIONS -->
+                    <td>
+
+                      <div class="equipment-row-actions">
+
+                        <!-- EDIT -->
+                        <% if (
+                          currentUser.role === "Admin" ||
+                          currentUser.role === "Maintenance Manager" ||
+                          (
+                            currentUser.role === "Technician" &&
+                            Number(order.assigned_to) === Number(currentUser.id)
+                          )
+                        ) { %>
+
+                          <a
+                            href="/work-orders/<%= order.id %>/edit"
+                            class="equipment-action-btn action-edit"
+                          >
+                            Edit
+                          </a>
+
+                        <% } %>
+
+
+                        <!-- DELETE -->
+                        <% if (
+                          currentUser.role === "Admin" ||
+                          currentUser.role === "Maintenance Manager"
+                        ) { %>
+
+                          <form
+                            action="/work-orders/<%= order.id %>/delete"
+                            method="POST"
+                            class="delete-confirm-form"
+                            data-delete-message="Are you sure you want to delete this work order? This action cannot be undone."
+                          >
+
+                            <button
+                              type="submit"
+                              class="equipment-action-btn action-delete"
+                            >
+                              Delete
+                            </button>
+
+                          </form>
+
+                        <% } %>
+
+                      </div>
+
+                    </td>
+
+                  </tr>
+
+                <% }); %>
+
+
+              <% } else { %>
+
+                <!-- EMPTY STATE -->
+                <tr>
+                  <td colspan="8">
+
+                    <div class="equipment-empty-state">
+
+                      <div class="equipment-empty-icon">
+                        &#128221;
+                      </div>
+
+                      <h3>No Work Orders Found</h3>
+
+                      <p>
+                        There are currently no work orders matching your search.
+                      </p>
+
+                      <% if (
+                        currentUser.role === "Admin" ||
+                        currentUser.role === "Maintenance Manager"
+                      ) { %>
+
+                        <a
+                          href="/work-orders/new"
+                          class="equipment-primary-btn"
+                        >
+                          + Create Work Order
+                        </a>
+
+                      <% } %>
+
+                    </div>
+
+                  </td>
+                </tr>
+
+              <% } %>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </section>
+
+    </main>
+
+    <!-- Footer -->
+    <%- include("partials/footer") %>
+
+    <!-- Bootstrap JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
